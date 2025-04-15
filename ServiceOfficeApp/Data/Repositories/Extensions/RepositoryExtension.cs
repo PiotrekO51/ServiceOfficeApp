@@ -1,10 +1,7 @@
-﻿
-
-using ServiceOfficeApp.Data.Entities;
+﻿using ServiceOfficeApp.Data.Entities;
 using System.Text.Json;
 
 namespace ServiceOfficeApp.Data.Repositories.Extensions;
-
 
 public static class RepositoryExtension
 {

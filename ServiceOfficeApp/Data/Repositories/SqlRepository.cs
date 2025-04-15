@@ -25,6 +25,7 @@ public class SqlRepository<T> : IRepository<T> where T : class, IEntity, new()
     {
         return _dbSet.ToList();
     }
+
     public void Add(T item)
     {
         _dbSet.Add(item);
@@ -32,7 +33,6 @@ public class SqlRepository<T> : IRepository<T> where T : class, IEntity, new()
     }
 
     public T? GetById(int id) => _dbSet.Single(c  => c.Id == id);
-   
 
     public int GetNumberId(string txt)
     {

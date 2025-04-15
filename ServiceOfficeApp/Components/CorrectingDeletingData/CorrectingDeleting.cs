@@ -28,10 +28,12 @@ public class CorrectingDeleting: ICorrectingDeleting
         _newEntries = newEntries;
         _repositoryInstaller.ItemDeleted += InfoInstallerDeleted;
     }
+
     void InfoInstallerDeleted(object? sender, Installer e)
     {
         _newEntries.WriteDataToFile("InstallerBackUp.txt", $"Usunięto instalatora {e.Company} from {sender?.GetType().Name}");
     }
+
     public void InstallerChange()
     {
         _objectsReader.InstallerDataReader();
@@ -45,9 +47,11 @@ public class CorrectingDeleting: ICorrectingDeleting
         $"\t \t \t                       {changeName.Phone}\n" +
         $"");
         ObjectRenamer();
+
         void ObjectRenamer()
         {
             MenuRenamer();
+
             bool Close = true;
             while (Close)
             {
@@ -83,12 +87,14 @@ public class CorrectingDeleting: ICorrectingDeleting
                 }
             }
         }
+
         void CompanyName()
         {
             changeName.Company = DataInstallerInputs("nazwę firmy");
             InstSave();
             Console.WriteLine("");
         }
+
         void InstallerName()
         {
             changeName.Name = DataInstallerInputs(" Nowe imię \n" +
@@ -99,32 +105,38 @@ public class CorrectingDeleting: ICorrectingDeleting
             changeName.Surname = DataInstallerInputs("Nowe nazwisko\n" +
                 ""); InstSave();
         }
+
         void InstCity()
         {
             changeName.City = DataInstallerInputs("Nową nazwę maista\n" +
                 ""); InstSave();
         }
+
         void InstStreet()
         {
             changeName.Street = DataInstallerInputs("podaj nazwę ulicy\n" +
                 ""); InstSave();
         }
+
         void InstZipCode()
         {
             changeName.ZipCode = DataInstallerInputs("kod pocztowy\n" +
                 ""); InstSave();
         }
+
         void InstPhone()
         {
             changeName.Phone = DataInstallerInputs("Nr telefonu\n" +
                 ""); InstSave();
         }
+
         void InstSave()
         {
             _repositoryInstaller.Save();
         }
 
     }
+
     public void DesignerChange()
     {
         _objectsReader.DesignerDataReader();
@@ -138,6 +150,7 @@ public class CorrectingDeleting: ICorrectingDeleting
        $"\t \t \t                       {changeName.Phone}\n" +
        $"");
         ObjectRenamer();
+
         void ObjectRenamer()
         {
             MenuRenamer();
@@ -177,42 +190,50 @@ public class CorrectingDeleting: ICorrectingDeleting
                 }
             }
         }
+
         void CompanyName()
         {
             changeName.Company = DataInstallerInputs("nazwę firmy");
             InstSave();
             Console.WriteLine("");
         }
+
         void InstallerName()
         {
             changeName.Name = DataInstallerInputs(" Nowe imię \n" +
                 ""); InstSave();
         }
+
         void InstSurname()
         {
             changeName.Surname = DataInstallerInputs("Nowe nazwisko\n" +
                 ""); InstSave();
         }
+
         void InstCity()
         {
             changeName.City = DataInstallerInputs("Nową nazwę maista\n" +
                 ""); InstSave();
         }
+
         void InstStreet()
         {
             changeName.Street = DataInstallerInputs("podaj nazwę ulicy\n" +
                 ""); InstSave();
         }
+
         void InstZipCode()
         {
             changeName.ZipCode = DataInstallerInputs("kod pocztowy\n" +
                 ""); InstSave();
         }
+
         void InstPhone()
         {
             changeName.Phone = DataInstallerInputs("Nr telefonu\n" +
                 ""); InstSave();
         }
+
         void InstSave()
         {
             _repositoryDesigner.Save();
@@ -222,6 +243,7 @@ public class CorrectingDeleting: ICorrectingDeleting
     public void InstallerDelete()
     {
         _objectsReader.InstallerDataReader();
+
         while (true)
         {
             Console.WriteLine("Podaj ID instalatora do usunięcia: ");
@@ -252,6 +274,7 @@ public class CorrectingDeleting: ICorrectingDeleting
     public void DesignerDelete()
     {
         _objectsReader.DesignerDataReader();
+
         while (true)
         {
             Console.WriteLine("Podaj ID projektanta do usunięcia: ");
@@ -282,6 +305,7 @@ public class CorrectingDeleting: ICorrectingDeleting
     public void DeviceChange()
     {
         _objectsReader.DeviceL();
+
         while (true)
         {
             Console.WriteLine("Podaj ID urządzenia do zmainy: ");
@@ -307,6 +331,7 @@ public class CorrectingDeleting: ICorrectingDeleting
                     break;
                 }
             }
+
             else
             {
                 Console.WriteLine("Podano niepoprawne ID");
@@ -317,6 +342,7 @@ public class CorrectingDeleting: ICorrectingDeleting
     public void DeviceRemove()
     {
         _newEntries.DeviceList();
+
         while (true)
         {
             Console.WriteLine("Podaj ID urządzenia do usunięcia: ");
@@ -368,6 +394,7 @@ public class CorrectingDeleting: ICorrectingDeleting
             }
         }
     }
+
     Designer? RenameDesigner(string txt)
     {
         var rename = _repositoryDesigner.GetAll();

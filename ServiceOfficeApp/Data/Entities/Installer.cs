@@ -8,7 +8,6 @@ namespace ServiceOfficeApp.Data.Entities
 {
      public class Installer: EntitiBase
     {
-       
         public string? Authorization { get; set; }
         public DateTime Date { get; set; }
 

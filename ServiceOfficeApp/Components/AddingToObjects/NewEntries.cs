@@ -58,6 +58,7 @@ public class NewEntries : INewEntries
         });
         _repositoryInstaller.Save();
     }
+
     public void DesignerAdding()
     {
         _repositoryDesigner.Add(new Designer()
@@ -127,6 +128,7 @@ public class NewEntries : INewEntries
             return name2;
         }
     }
+
     public DateTime InputDateTime(string txt)
     {
         while (true)
@@ -149,6 +151,7 @@ public class NewEntries : INewEntries
             }
         }
     }
+
     string AutorisationCode(string txt)
     {
         string autorisationCode = null;
@@ -169,6 +172,7 @@ public class NewEntries : INewEntries
             autorisationCode = Console.ReadLine();
         }
     }
+
     public string DeviceAdded(string txt)
     {
         Console.Write(txt);
@@ -218,6 +222,7 @@ public class NewEntries : INewEntries
             else { Console.WriteLine("Nie poprawne ID"); }
         }
     }
+
     string InputString(string txt)
     {
         Console.WriteLine(txt);

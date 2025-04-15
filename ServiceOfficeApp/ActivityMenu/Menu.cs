@@ -16,6 +16,7 @@ public class Menu : IMenu
         _objectsReader = objectsReader;
         _newEntries = newEntries;
     }
+
     public void MenuStart()
     {
         bool Close = true;
@@ -125,6 +126,7 @@ public class Menu : IMenu
         }
 
     }
+
    public  void DeleteObject()
     {
         bool Stop = true;

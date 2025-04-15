@@ -24,6 +24,7 @@ public class CsvReader : ICsvReader
         return installer.ToList();
 
     }
+
     public List<Designer> ReadFileDesigner(string filename)
     {
 

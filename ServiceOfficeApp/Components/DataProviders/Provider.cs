@@ -20,6 +20,7 @@ public class Provider : IProvider
         return installer.SingleOrDefault(c  => c.Id == id,
             new Installer { Id = 0, Name = $"nie znaleziono  Id: {id}" });
     }
+
     public  DeviceList Device (int id)
     {
         var device = _repositoryDeviceList.GetAll();
