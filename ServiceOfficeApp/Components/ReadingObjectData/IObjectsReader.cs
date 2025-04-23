@@ -7,5 +7,6 @@
         void InstallerList();
         void InstallerDataReader();
         void DesignerDataReader();
+        void Filtration(string txt);
     }
 }

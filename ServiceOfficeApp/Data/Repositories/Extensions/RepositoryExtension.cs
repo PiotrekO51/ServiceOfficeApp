@@ -14,6 +14,27 @@ public static class RepositoryExtension
         }
         repository.Save();
     }
-    
+    public static void ExportToJson<T>(this IRepository<T> repository, string filePath)
+    where T : class, IEntity, new()
+    {
+        var items = repository.GetAll();
+        var json = JsonSerializer.Serialize(items);
+        File.WriteAllText(filePath, json);
+    }
+    public static void ImportFromJson<T>(this IRepository<T> repository, string filePath)
+    where T : class, IEntity, new()
+    {
+        var json = File.ReadAllText(filePath);
+        var items = JsonSerializer.Deserialize<IEnumerable<T>>(json);
+        if (items != null)
+        {
+            foreach (var item in items)
+            {
+                repository.Add(item);
+            }
+            repository.Save();
+        }
+    }
+
 }
 

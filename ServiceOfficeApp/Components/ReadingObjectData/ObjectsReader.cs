@@ -64,7 +64,7 @@ public class ObjectsReader : IObjectsReader
         }
         else { Console.WriteLine("Baza jest pusta"); }
     }
-    public void InstallerList()
+    public  void InstallerList()
     {
         var installerList = _repositoryInstaller.GetAll();
         foreach (var inst in installerList)
@@ -110,4 +110,57 @@ public class ObjectsReader : IObjectsReader
         }
         Console.ReadLine();
     }
+
+    public void Filtration(string txt)
+    {
+        Console.WriteLine($"Podaj {txt}");
+        string input1 = Console.ReadLine();
+        string input = input1.ToUpper();    
+        if (txt == "numer seryjny")
+        {
+            List<Device> deviceList = _repositoryDevice.GetAll()
+                .Where(x => x.SerialNumber == input)
+                .ToList();
+             
+            if (deviceList != null)
+            {
+                Console.Clear();
+                foreach (var dev in deviceList)
+                {
+                    Console.WriteLine($"ID: {dev.Id} - {dev.Manufacturer}\n" +
+                            $"\t\t Nazwa urządzenia             : {dev.DeviceName} \n" +
+                            $"\t\t Numer seryjny                : {dev.SerialNumber}\n" +
+                            $"\t\t Data uruchomienia            : {dev.LunchData.ToString("yyyy/MM/dd/dddd")}\n" +
+                            $"\t\t Nazwa furmy uruchamiającej   : {dev.CompanyLunching}\n" +
+                            "");
+                }
+                Console.ReadLine(); 
+            }
+            else 
+            { Console.WriteLine("Lista jest pusta"); Thread.Sleep(2000); }
+        }
+        else if (txt == "nazwę instalatora")
+        {
+            List<Device> deviceList = _repositoryDevice.GetAll()
+                .Where(x => x.CompanyLunching.StartsWith(input))
+                .ToList();
+
+            if (deviceList != null)
+            {
+                Console.Clear();
+                foreach (var dev in deviceList)
+                {
+                    Console.WriteLine($"ID: {dev.Id} - {dev.Manufacturer}\n" +
+                            $"\t\t Nazwa urządzenia             : {dev.DeviceName} \n" +
+                            $"\t\t Numer seryjny                : {dev.SerialNumber}\n" +
+                            $"\t\t Data uruchomienia            : {dev.LunchData.ToString("yyyy/MM/dd/dddd")}\n" +
+                            $"\t\t Nazwa furmy uruchamiającej   : {dev.CompanyLunching}\n" +
+                            "");
+                }
+                Console.ReadLine();
+            }
+            else
+            { Console.WriteLine("Lista jest pusta"); Thread.Sleep(2000); }
+        }
+    }  
 }

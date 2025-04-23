@@ -1,7 +1,9 @@
 ﻿using ServiceOfficeApp.Components.ReadingObjectData;
 using ServiceOfficeApp.Components.AddingToObjects;
+using ServiceOfficeApp.Components.XmlExports;
 using ServiceOfficeApp.Data.Entities;
 using ServiceOfficeApp.Components.CorrectingDeletingData;
+using System.ComponentModel.Design;
 
 namespace ServiceOfficeApp.ActivityMenu;
 
@@ -9,11 +11,14 @@ public class Menu : IMenu
 {
     private readonly ICorrectingDeleting _correctingDeleting;
     private readonly IObjectsReader _objectsReader;
+    private readonly IXmlExport _xmlExport;
     private readonly INewEntries _newEntries;
-    public Menu(IObjectsReader objectsReader, INewEntries newEntries, ICorrectingDeleting correctingDeleting)
+    public Menu(IObjectsReader objectsReader, INewEntries newEntries,
+        ICorrectingDeleting correctingDeleting, IXmlExport xmlExport)
     {
         _correctingDeleting = correctingDeleting;
         _objectsReader = objectsReader;
+        _xmlExport = xmlExport;
         _newEntries = newEntries;
     }
 
@@ -80,6 +85,7 @@ public class Menu : IMenu
                 "\v" +
                 "" +
                 "1 - Lista urządzeń zarejestrowanych       2 - Rejestracja urządzeń \n" +
+                "3 - Filtrowanie po numerze seryjnym       4 - Filtrowanie po nazwie instalatorze\n" +
                 "x  - wyjście z menu ");
             string input = Console.ReadLine();
             switch (input)
@@ -89,6 +95,12 @@ public class Menu : IMenu
                     break;
                 case "2":
                     _newEntries.Register();
+                    break;
+                case "3":
+                    _objectsReader.Filtration("numer seryjny");
+                    break;
+                case "4":
+                    _objectsReader.Filtration("nazwę instalatora");
                     break;
                 case "x":
                     Stop = false;
@@ -127,7 +139,7 @@ public class Menu : IMenu
 
     }
 
-   public  void DeleteObject()
+    public void DeleteObject()
     {
         bool Stop = true;
         while (Stop)
@@ -139,7 +151,10 @@ public class Menu : IMenu
                 "" +
                 "1 - Usuwanie danych instalatora       2 - Usuwanie danych projektanta \n" +
                 "x  - wyjście z menu ");
+
+
             string input = Console.ReadLine();
+
             switch (input)
             {
                 case "1":
@@ -150,6 +165,12 @@ public class Menu : IMenu
                     break;
                 case "x":
                     Stop = false;
+                    break;
+                default:
+                    {
+                        Console.WriteLine("Nie porawne ID");
+                        Thread.Sleep(750);
+                    }
                     break;
 
             }
@@ -163,56 +184,68 @@ public class Menu : IMenu
         bool Stop = true;
         while (Stop)
         {
-            Console.Clear();
-            Console.SetCursorPosition(5, 1);
-            Console.WriteLine("- Urządzenia: Wprowadzanie  i działanie na urządzeniach -\n" +
-                "" +
-                "1 - Lista urządzeń                             2 - Dodawanie urządzeń \n" +
-                "3 - Poprawianie danych urzadzenia              4 - Usuwanie urządzeń \n" +
-                "x - wyjście z menu \n" +
-                "");
-
-            string input = Console.ReadLine();
-            switch (input)
+            if (password == "123PO")
             {
-                case "1":
-                    _objectsReader.DeviceL();
-                    break;
-                case "2":
-                    _newEntries.AddDeviceList(password);
-                    break;
-                case "3":
-                    _correctingDeleting.DeviceChange();
-                    break;
-                case "4":
-                    _correctingDeleting.DeviceRemove();
-                    break;
-                case "x":
-                    Stop = false;
-                    break;
+                Console.Clear();
+                Console.SetCursorPosition(5, 1);
+                Console.WriteLine("- Urządzenia: Wprowadzanie  i działanie na urządzeniach -\n" +
+                    "" +
+                    "1 - Lista urządzeń                             2 - Dodawanie urządzeń \n" +
+                    "3 - Poprawianie danych urzadzenia              4 - Usuwanie urządzeń \n" +
+                    "5 - Import Export plików xml                   x - wyjście z menu\n" +
+                    "");
 
+                string input = Console.ReadLine();
+                switch (input)
+                {
+                    case "1":
+                        _objectsReader.DeviceL();
+                        break;
+                    case "2":
+                        _newEntries.AddDeviceList(password);
+                        break;
+                    case "3":
+                        _correctingDeleting.DeviceChange();
+                        break;
+                    case "4":
+                        _correctingDeleting.DeviceRemove();
+                        break;
+                    case "5":
+                        _xmlExport.MenuXml();
+                        break;
+                    case "x":
+                        Stop = false;
+                        break;
+                }
+            }
+            else
+            {
+                Console.WriteLine("Nie poprawne hasło");
+                Thread.Sleep(750);
+                break;
             }
         }
+        string Password()
+        {
+            string pass3 = null;
+            Console.Write("Podaj hasło:   ");
+            string pass = Console.ReadLine();
+            string pass2 = pass.ToUpper();
+            if (pass2 != null && pass2 == "123PO")
+            {
+                Console.WriteLine("Hasło poprawne");
+                Thread.Sleep(750);
+                pass3 = pass2;
 
-    }
-    string Password()
-    {
-        string pass3 = null;
-        Console.Write("Podaj hasło:   ");
-        string pass = Console.ReadLine();
-        string pass2 = pass.ToUpper();
-        if (pass2 != null && pass2 == "123PO")
-        {
-            Console.WriteLine("Hasło poprawne");
-            Thread.Sleep(750);
-            pass3 = pass2;
+            }
+            else
+            {
+                Console.WriteLine("Nie poprawne HASŁO");
+                Thread.Sleep(750);
+
+            }
+            return pass3;
         }
-        else
-        {
-            Console.WriteLine("Nie poprawne HASŁO");
-            Thread.Sleep(750);
-        }
-        return pass3;
     }
 }
 

@@ -5,6 +5,7 @@ using ServiceOfficeApp.Data.Entities;
 using ServiceOfficeApp.Data.Repositories;
 using ServiceOfficeApp.Components.ReadingObjectData;
 using ServiceOfficeApp.Components.DataProviders;
+using static System.Net.Mime.MediaTypeNames;
 namespace ServiceOfficeApp.Components.AddingToObjects;
 
 public class NewEntries : INewEntries
@@ -17,10 +18,12 @@ public class NewEntries : INewEntries
     private readonly IProvider _provider;
 
     public NewEntries(IRepository<Installer> repositoryInstaller, IRepository<Designer> repositoryDesigner,
-        IRepository<DeviceList> repositoryDeviceList, IRepository<Device> repositoryDevice, IProvider provider)
+        IRepository<DeviceList> repositoryDeviceList, IRepository<Device> repositoryDevice,
+        IProvider provider, IObjectsReader objectsReader)
 
     {
         _provider = provider;
+        _objectsReader = objectsReader;
         _repositoryDevice = repositoryDevice;
         _repositoryDesigner = repositoryDesigner;
         _repositoryInstaller = repositoryInstaller;
@@ -104,7 +107,7 @@ public class NewEntries : INewEntries
             Manufacturer = device.Manufacturer,
             DeviceName = $"{device.DeviceName}-{device.PowerFactor} kW",
             SerialNumber = serialNumber,
-            CompanyLunching = $"Id: {installer.Id}-{installer.Company}-{installer.City}",
+            CompanyLunching = $"{installer.Company}-{installer.City}",
             LunchData = date,
         });
         _repositoryDevice.Save();
@@ -206,6 +209,7 @@ public class NewEntries : INewEntries
         if (txt == "Podaj id instalatora")
         {
             _objectsReader.InstallerList();
+
         }
         else if (txt == "Podaj id urządzenia")
         {
@@ -213,30 +217,53 @@ public class NewEntries : INewEntries
         }
         while (true)
         {
-            Console.WriteLine(txt);
-            string input = Console.ReadLine();
-            if (int.TryParse(input, out int id))
+            string input = string.Empty;
+            if (txt == "Podaj id instalatora")
             {
-                return id;
+
+                Console.WriteLine(txt);
+                string input1 = Console.ReadLine();
+                if (int.TryParse(input1, out int id1)) ;
+                var installer = _repositoryInstaller.GetAll().FirstOrDefault(x => x.Id == id1);
+                if (installer != null && input != null)
+                {
+                    return id1;
+                    break;
+                }
+                else { Console.WriteLine("Nie poprawne ID"); }
             }
-            else { Console.WriteLine("Nie poprawne ID"); }
+            else if (txt == "Podaj id urządzenia")
+            {
+                Console.WriteLine(txt);
+                string input1 = Console.ReadLine();
+                if (int.TryParse(input1, out int id1)) ;
+                var installer = _repositoryDeviceList.GetAll().FirstOrDefault(x => x.Id == id1);
+                if (installer != null && input != null)
+                {
+                    return id1;
+                    break;
+                }
+                else { Console.WriteLine("Nie poprawne ID"); }
+            }
         }
     }
 
+
     string InputString(string txt)
-    {
-        Console.WriteLine(txt);
+    { 
         while (true)
         {
+            Console.WriteLine(txt);
             string input = Console.ReadLine();
+            var deviceNumber = _repositoryDevice.GetAll().FirstOrDefault(x => x.SerialNumber == input);
             int inputLenght = input.Length;
-            if (inputLenght == 6)
+            if (input != null && inputLenght == 6 && deviceNumber == null)
             {
                 return input;
                 break;
             }
-            else { Console.WriteLine("Nie poprawny numer"); }
+            else
+            { Console.WriteLine("Numer istnieje lub jest nie poprawny"); }
         }
     }
-
 }
